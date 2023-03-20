@@ -1,4 +1,4 @@
-SRCS = $(addprefix Sources/, main.c)
+SRCS = $(addprefix Sources/, main.c error.c utils.c checker.c mutex.c)
 
 NAME = philosophers
 
@@ -9,7 +9,7 @@ FLAGS = -Wall -Werror -Wextra
 OBJS = ${SRCS:.c=.o}
 
 ${NAME} : ${OBJS}
-			gcc ${FLAGS} ${INC} $(OBJS) -o $(NAME)
+			gcc ${FLAGS} ${INC} $(OBJS) -lpthread -o $(NAME)
 
 all : ${NAME}
 
