@@ -16,12 +16,17 @@ typedef struct s_philo
 	int	philos;
 	int	servings;
 	int	stuffed;
-	int	id;
 	float	time_to_die;
 	float	time_to_eat;
 	float	time_to_sleep;
 
 }	t_philo;
+
+typedef struct s_philos
+{
+	t_philo	*data;
+	int		id;
+}	t_philos;
 
 int				main(int argc, char **argv);
 int				ft_print_error(char *str);

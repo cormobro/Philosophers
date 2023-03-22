@@ -9,7 +9,7 @@ FLAGS = -Wall -Werror -Wextra
 OBJS = ${SRCS:.c=.o}
 
 ${NAME} : ${OBJS}
-			gcc ${FLAGS} ${INC} $(OBJS) -lpthread -g -fsanitize=thread -o $(NAME)
+			gcc ${FLAGS} ${INC} $(OBJS) -lpthread -g3 -fsanitize=address  -o $(NAME)
 
 all : ${NAME}
 
