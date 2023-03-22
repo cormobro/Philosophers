@@ -25,18 +25,24 @@ static int	ft_free_fill(t_philo *data, int nb)
 		free(data->dead);
 		return (0);
 	}
-	else
+	else if (nb == 3)
 	{
 		free(data->forks);
 		free(data->dead);
 		free(data->print);
 		return (0);
 	}
+	free(data->forks);
+	free(data->dead);
+	free(data->print);
+	free(data->is_alive);
+	return (0);
 }
 
 static int	ft_fill(int argc, char **argv, t_philo *data)
 {
 	data->philos = ft_atoi(argv[1]);
+	data->stuffed = 0;
 	if (argc == 6)
 		data->servings = ft_atoi(argv[5]);
 	data->time_to_die = ft_atof(argv[2]);
@@ -54,6 +60,9 @@ static int	ft_fill(int argc, char **argv, t_philo *data)
 	data->is_alive = malloc(sizeof(int));
 	if (!data->is_alive)
 		return (ft_free_fill(data, 3));
+	data->is_stuffed = malloc(sizeof(int) * data->philos);
+	if (!data->is_stuffed)
+		return (ft_free_fill(data, 4));
 	data->is_alive[0] = 1;
 	return (1);
 }

@@ -75,3 +75,17 @@ float	ft_atof(char *str)
 		return (0);
 	return (sign * ft_atofbis(i, str));
 }
+
+void	ft_stuffed(t_philo *data)
+{
+	int	i;
+
+	i = 0;
+	if (data->is_stuffed[0])
+	{
+		while (data->is_stuffed[i] == data->servings)
+			i++;
+		if (i == data->philos)
+			data->stuffed = 1;
+	}
+}
