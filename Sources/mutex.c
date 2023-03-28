@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 18:04:39 by febonaer          #+#    #+#             */
-/*   Updated: 2023/03/20 19:32:01 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:19:33 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ int ft_init_mutex(t_philo *data)
 	i = 0;
 	while (i < data->philos)
 	{
-		err = pthread_mutex_init(&data->forks[i++], NULL);
+		err = pthread_mutex_init(&data->forks[i], NULL);
 		if (err != 0)
 			return (1);
+		i++;
 	}
 	err = pthread_mutex_init(data->dead, NULL);
 	if (err != 0)
@@ -53,4 +54,12 @@ int ft_init_mutex(t_philo *data)
 	if (err != 0)
 		return (1);
 	return (err);
+}
+
+void	ft_print(t_philos *philos, int i)
+{
+	pthread_mutex_lock(philos->data->print);
+	if (i == 1)
+		printf("Le philosophe %d mange.\n", philos->id);
+	pthread_mutex_unlock(philos->data->print);
 }

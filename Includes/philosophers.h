@@ -39,5 +39,6 @@ long long int	ft_atoi(const char *str);
 float			ft_atof(char *str);
 void				ft_stuffed(t_philo *data);
 void				*ft_philosopher(void * data);
+void			ft_print(t_philos *philos, int i);
 
 #endif
