@@ -29,7 +29,7 @@ static int	philosophers(t_philo *data)
 	//	ft_stuffed(data);
 	err = ft_join_threads(data, threads, err);
 	if (err != 0)
-		return (ft_free(data));
+		return (0);
 	err = ft_destroy_mutex(data);
 	if (err != 0)
 		return (ft_free(data));

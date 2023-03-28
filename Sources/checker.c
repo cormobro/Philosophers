@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:19:55 by febonaer          #+#    #+#             */
-/*   Updated: 2023/03/22 18:50:43 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:34:32 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ static int	ft_fill(int argc, char **argv, t_philo *data)
 
 int	ft_check_fill(int argc, char **argv, t_philo *data)
 {
+	int	i;
+
 	if (ft_atoi(argv[1]) <= 0)
 		return (0);
 	if (argc == 6)
@@ -80,5 +82,8 @@ int	ft_check_fill(int argc, char **argv, t_philo *data)
 		return (0);
 	if (!ft_fill(argc, argv, data))
 		return (0);
+	i = -1;
+	while (++i < data->philos)
+		data->is_stuffed[i] = 0;
 	return (1);
 }
