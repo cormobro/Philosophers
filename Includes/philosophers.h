@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef struct s_philo
 {
@@ -35,6 +36,7 @@ int				ft_init_mutex(t_philo *data);
 int				ft_destroy_mutex(t_philo *data);
 int				ft_init_threads(t_philo *data, pthread_t *threads, int err);
 int				ft_join_threads(t_philo *data, pthread_t *threads, int err);
+long int		ft_gettime();
 long long int	ft_atoi(const char *str);
 float			ft_atof(char *str);
 void				ft_stuffed(t_philo *data);

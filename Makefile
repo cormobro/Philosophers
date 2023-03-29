@@ -1,4 +1,4 @@
-SRCS = $(addprefix Sources/, main.c error.c utils.c checker.c mutex.c threads.c)
+SRCS = $(addprefix Sources/, main.c error.c utils.c checker.c mutex.c threads.c utils_thread.c)
 
 NAME = philosophers
 

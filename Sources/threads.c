@@ -3,8 +3,11 @@
 int	ft_init_threads(t_philo *data, pthread_t *threads, int err)
 {
 	int			i;
-	t_philos	philos[data->philos];
+	t_philos	*philos;
 
+	philos = malloc(sizeof(t_philos) * data->philos);
+	if (!philos)
+		return (0);
 	i = 0;
 	while (i < data->philos)
 	{
@@ -37,13 +40,12 @@ int	ft_join_threads(t_philo *data, pthread_t *threads, int err)
 		free(r);
 		if (err != 0)
 			return (1);
-		printf("thread %d closed", i);
 		i++;
 	}
 	return (err);
 }
 
-static int	is_stuffed(t_philos *philos)
+/*static int	is_stuffed(t_philos *philos)
 {
 	int	i;
 	int	res;
@@ -60,17 +62,29 @@ static int	is_stuffed(t_philos *philos)
 		i++;
 	}
 	return (res);
-}
+}*/
+
+/*static void	*ft_monitor(void * datas)
+{
+	t_philos	*philos = (t_philos*) datas;
+
+
+}*/
 
 void	*ft_philosopher(void * datas)
 {
 	t_philos	*philos = (t_philos*)	datas;
+	//pthread_t	*monitor;
 	int *r = malloc(sizeof(int));
 	*r = 1;
 	int	left;
 	int	right;
 	int eaten;
 
+	printf("time is: %ld\n", ft_gettime());
+	//monitor = malloc(sizeof(pthread_t));
+	//if (pthread_create(&monitor, NULL, &ft_monitor, philos))
+	//	return ;
 	eaten = 0;
 	left = philos->id;
 	right = (left + 1) % philos->data->philos;
@@ -87,15 +101,11 @@ void	*ft_philosopher(void * datas)
 			pthread_mutex_lock(&philos->data->forks[left]);
 		}
 		ft_print(philos, 1);
-		//printf("Le philosophe %d mange.\n", philos->id);
 		pthread_mutex_unlock(&philos->data->forks[left]);
 		pthread_mutex_unlock(&philos->data->forks[right]);
 		usleep(philos->data->time_to_sleep * 1000);
-		//usleep(1000);
 		eaten++;
 	}
 	philos->data->is_stuffed[philos->id] = 1;
-	while (!is_stuffed(philos))
-		eaten++;
 	return ((void *) r);
 }
