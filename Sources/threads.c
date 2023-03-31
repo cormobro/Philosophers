@@ -13,6 +13,7 @@ int	ft_init_threads(t_philo *data, pthread_t *threads, int err)
 	{
 		philos[i].data = data;
 		philos[i].id = i;
+		philos[i].last_dinner = 0;
 		i++;
 	}
 	usleep(100);
@@ -23,7 +24,6 @@ int	ft_init_threads(t_philo *data, pthread_t *threads, int err)
 		if (err != 0)
 			return (1);
 		i++;
-		usleep(100);
 	}
 	return (err);
 }
@@ -81,7 +81,6 @@ void	*ft_philosopher(void * datas)
 	int	right;
 	int eaten;
 
-	printf("time is: %ld\n", ft_gettime());
 	//monitor = malloc(sizeof(pthread_t));
 	//if (pthread_create(&monitor, NULL, &ft_monitor, philos))
 	//	return ;
@@ -90,20 +89,27 @@ void	*ft_philosopher(void * datas)
 	right = (left + 1) % philos->data->philos;
 	while (eaten < philos->data->servings)
 	{
+		ft_print(philos, "is thinking");
 		if (left < right)
 		{
 			pthread_mutex_lock(&philos->data->forks[left]);
+			ft_print(philos, "has taken a fork");
 			pthread_mutex_lock(&philos->data->forks[right]);
+			ft_print(philos, "has taken a fork");
 		}
 		else
 		{
 			pthread_mutex_lock(&philos->data->forks[right]);
+			ft_print(philos, "has taken a fork");
 			pthread_mutex_lock(&philos->data->forks[left]);
+			ft_print(philos, "has taken a fork");
 		}
-		ft_print(philos, 1);
+		ft_print(philos, "is eating");
+		usleep(philos->data->time_to_eat * 1000);
 		pthread_mutex_unlock(&philos->data->forks[left]);
 		pthread_mutex_unlock(&philos->data->forks[right]);
 		usleep(philos->data->time_to_sleep * 1000);
+		ft_print(philos, "is sleeping");
 		eaten++;
 	}
 	philos->data->is_stuffed[philos->id] = 1;

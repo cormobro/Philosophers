@@ -25,8 +25,9 @@ typedef struct s_philo
 
 typedef struct s_philos
 {
-	t_philo	*data;
-	int		id;
+	t_philo		*data;
+	int			id;
+	long int	last_dinner;
 }	t_philos;
 
 int				main(int argc, char **argv);
@@ -41,6 +42,6 @@ long long int	ft_atoi(const char *str);
 float			ft_atof(char *str);
 void				ft_stuffed(t_philo *data);
 void				*ft_philosopher(void * data);
-void			ft_print(t_philos *philos, int i);
+void			ft_print(t_philos *philos, char *str);
 
 #endif

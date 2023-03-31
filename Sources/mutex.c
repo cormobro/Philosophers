@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 18:04:39 by febonaer          #+#    #+#             */
-/*   Updated: 2023/03/29 19:12:18 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/03/31 17:36:10 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,14 @@ int ft_init_mutex(t_philo *data)
 	return (err);
 }
 
-void	ft_print(t_philos *philos, int i)
+void	ft_print(t_philos *philos, char *str)
 {
+	long int	time;
+
+	time = ft_gettime();
+	if (!time)
+		return ;
 	pthread_mutex_lock(philos->data->print);
-	if (i == 1)
-		printf("Le philosophe %d mange.\n", philos->id);
+	printf("%ld %d %s\n", time, philos->id, str); 
 	pthread_mutex_unlock(philos->data->print);
 }
