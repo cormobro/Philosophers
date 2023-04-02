@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 18:04:39 by febonaer          #+#    #+#             */
-/*   Updated: 2023/03/31 17:36:10 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/04/02 18:54:20 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ int ft_init_mutex(t_philo *data)
 	err = pthread_mutex_init(data->print, NULL);
 	if (err != 0)
 		return (1);
+	err = pthread_mutex_init(data->death, NULL);
+	if (err != 0)
+		return (1);
 	return (err);
 }
 
@@ -64,6 +67,7 @@ void	ft_print(t_philos *philos, char *str)
 	if (!time)
 		return ;
 	pthread_mutex_lock(philos->data->print);
-	printf("%ld %d %s\n", time, philos->id, str); 
+	if (philos->data->is_alive[0] == 1)
+		printf("%ld %d %s\n", time, philos->id, str); 
 	pthread_mutex_unlock(philos->data->print);
 }
