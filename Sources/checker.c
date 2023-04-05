@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:19:55 by febonaer          #+#    #+#             */
-/*   Updated: 2023/04/02 19:57:21 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:55:39 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,14 @@ static int	ft_fill(int argc, char **argv, t_philo *data)
 {
 	data->philos = ft_atoi(argv[1]);
 	data->stuffed = 0;
+	data->servings = 2147483647;
 	if (argc == 6)
 		data->servings = ft_atoi(argv[5]);
-	data->time_to_die = ft_atof(argv[2]);
-	data->time_to_eat = ft_atof(argv[3]);
-	data->time_to_sleep = ft_atof(argv[4]);
+	if (data->philos == 1)
+		data->servings = 1;
+	data->time_to_die = ft_atoi(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philos);
 	if (!data->forks)
 		return (0);
@@ -78,7 +81,7 @@ int	ft_check_fill(int argc, char **argv, t_philo *data)
 		if (ft_atoi(argv[5]) <= 0)
 			return (0);
 	}
-	if (ft_atof(argv[2]) <= 0 || ft_atof(argv[3]) <= 0 || ft_atof(argv[4]) <= 0)
+	if (ft_atoi(argv[2]) <= 0 || ft_atoi(argv[3]) <= 0 || ft_atoi(argv[4]) <= 0)
 		return (0);
 	if (!ft_fill(argc, argv, data))
 		return (0);

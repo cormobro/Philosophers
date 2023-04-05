@@ -13,14 +13,15 @@ typedef struct s_philo
 	pthread_mutex_t	*dead;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
-	int	*is_alive;
-	int	*is_stuffed;
-	int	philos;
-	int	servings;
-	int	stuffed;
-	float	time_to_die;
-	float	time_to_eat;
-	float	time_to_sleep;
+	int				*is_alive;
+	int				*is_stuffed;
+	int				philos;
+	int				servings;
+	int				stuffed;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	long int		start_time;
 
 }	t_philo;
 
@@ -28,7 +29,10 @@ typedef struct s_philos
 {
 	t_philo		*data;
 	int			id;
+	int			left;
+	int			right;
 	long int	last_dinner;
+	long int	eaten;
 }	t_philos;
 
 int				main(int argc, char **argv);
@@ -40,9 +44,9 @@ int				ft_init_threads(t_philo *data, pthread_t *threads, int err);
 int				ft_join_threads(t_philo *data, pthread_t *threads, int err);
 long int		ft_gettime();
 long long int	ft_atoi(const char *str);
-float			ft_atof(char *str);
 void				ft_stuffed(t_philo *data);
 void				*ft_philosopher(void * data);
 void			ft_print(t_philos *philos, char *str);
+void			ft_usleep(int time);
 
 #endif

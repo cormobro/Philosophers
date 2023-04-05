@@ -6,11 +6,22 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 18:49:05 by febonaer          #+#    #+#             */
-/*   Updated: 2023/03/31 17:36:09 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:26:42 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Includes/philosophers.h"
+
+void		ft_usleep(int time)
+{
+	long int	currenttime;
+
+	currenttime = ft_gettime();
+	if (!currenttime)
+		return ;
+	while (ft_gettime() - currenttime < time)
+		usleep(1000);
+}
 
 long int	ft_gettime()
 {

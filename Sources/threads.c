@@ -13,10 +13,12 @@ int	ft_init_threads(t_philo *data, pthread_t *threads, int err)
 	{
 		philos[i].data = data;
 		philos[i].id = i;
-		philos[i].last_dinner = 0;
+		philos[i].eaten = 0;
+		philos[i].left = philos[i].id;
+		philos[i].right = (philos[i].left + 1) % philos[i].data->philos;
 		i++;
 	}
-	usleep(100);
+	philos[0].data->start_time = ft_gettime();
 	i = 0;
 	while (i < data->philos)
 	{
@@ -45,50 +47,34 @@ int	ft_join_threads(t_philo *data, pthread_t *threads, int err)
 	return (err);
 }
 
-/*static int	is_stuffed(t_philos *philos)
-{
-	int	i;
-	int	res;
-
-	i = 0;
-	res = 1;
-	while (i < philos->data->philos)
-	{
-		if (philos->data->is_stuffed[i] != 1)
-		{
-			res = 0;
-			break ;
-		}
-		i++;
-	}
-	return (res);
-}*/
-
 static void	*ft_monitor(void * datas)
 {
 	t_philos	*philos = (t_philos*) datas;
 	int	timer;
 	int	i;
+	long int	time;
 
-	timer = (philos->data->time_to_eat + philos->data->time_to_sleep) / philos->data->time_to_die;
+	timer = philos->data->time_to_eat + philos->data->time_to_sleep + 30;
+	if (timer < philos->data->time_to_die)
+		timer = philos->data->time_to_die;
 	i = 0;
-	usleep((philos->data->time_to_die) / 10);
-	while (i <= timer + 1)
+	while (i <= timer)
 	{
 		pthread_mutex_lock(philos->data->death);
-		if (philos->last_dinner && ft_gettime() - philos->last_dinner >= philos->data->time_to_die && philos->data->is_alive[0] == 1)
+		time = ft_gettime();
+		if (philos->last_dinner && time - philos->last_dinner >= philos->data->time_to_die && philos->data->is_alive[0] == 1)
 		{
 			pthread_mutex_lock(philos->data->dead);
 			philos->data->is_alive[0] = 2;
 			pthread_mutex_unlock(philos->data->dead);
 			pthread_mutex_lock(philos->data->print);
-			printf("%ld %d has died", ft_gettime(), philos->id);
+			printf("%ld %d has died", time - philos->data->start_time, philos->id + 1);
 			pthread_mutex_unlock(philos->data->print);
 			pthread_mutex_unlock(philos->data->death);
 			return (0);
 		}
 		pthread_mutex_unlock(philos->data->death);
-		usleep(philos->data->time_to_die);
+		ft_usleep(1);
 		i++;
 	}
 	return (0);
@@ -98,16 +84,9 @@ void	*ft_philosopher(void * datas)
 {
 	t_philos	*philos = (t_philos*)	datas;
 	pthread_t	*monitor;
-	int *r = malloc(sizeof(int));
-	*r = 1;
-	int	left;
-	int	right;
-	int eaten;
 
-	eaten = 0;
-	left = philos->id;
-	right = (left + 1) % philos->data->philos;
-	while (eaten < philos->data->servings && philos->data->is_alive[0] == 1)
+	philos->last_dinner = ft_gettime();
+	while (philos->eaten < philos->data->servings && philos->data->is_alive[0] == 1)
 	{
 		monitor = malloc(sizeof(pthread_t));
 		if (!monitor)
@@ -116,34 +95,44 @@ void	*ft_philosopher(void * datas)
 			return (0);
 		if (philos->data->is_alive[0] == 1)
 			ft_print(philos, "is thinking");
-		if (left < right && philos->data->is_alive[0] == 1)
+		if (philos->left < philos->right && philos->data->is_alive[0] == 1)
 		{
-			pthread_mutex_lock(&philos->data->forks[left]);
+			pthread_mutex_lock(&philos->data->forks[philos->left]);
 			ft_print(philos, "has taken a fork");
-			pthread_mutex_lock(&philos->data->forks[right]);
+			pthread_mutex_lock(&philos->data->forks[philos->right]);
 			ft_print(philos, "has taken a fork");
 		}
 		else if (philos->data->is_alive[0] == 1)
 		{
-			pthread_mutex_lock(&philos->data->forks[right]);
+			pthread_mutex_lock(&philos->data->forks[philos->right]);
 			ft_print(philos, "has taken a fork");
-			pthread_mutex_lock(&philos->data->forks[left]);
-			ft_print(philos, "has taken a fork");
+			if (philos->data->philos != 1)
+			{
+				pthread_mutex_lock(&philos->data->forks[philos->left]);
+				ft_print(philos, "has taken a fork");
+			}
 		}
-		pthread_mutex_lock(philos->data->death);
-		philos->last_dinner = ft_gettime();
-		pthread_mutex_unlock(philos->data->death);
-		if (philos->data->is_alive[0] == 1)
-			ft_print(philos, "is eating");
-		usleep(philos->data->time_to_eat * 1000);
-		pthread_mutex_unlock(&philos->data->forks[left]);
-		pthread_mutex_unlock(&philos->data->forks[right]);
-		usleep(philos->data->time_to_sleep * 1000);
-		if (philos->data->is_alive[0] == 1)
-			ft_print(philos, "is sleeping");
-		eaten++;
+		if (philos->data->philos != 1)
+		{
+			pthread_mutex_lock(philos->data->death);
+			philos->last_dinner = ft_gettime();
+			pthread_mutex_unlock(philos->data->death);
+			if (philos->data->is_alive[0] == 1)
+				ft_print(philos, "is eating");
+		}
+		ft_usleep(philos->data->time_to_eat);
+		if (philos->data->philos != 1)
+			pthread_mutex_unlock(&philos->data->forks[philos->left]);
+		pthread_mutex_unlock(&philos->data->forks[philos->right]);
+		if (philos->data->philos != 1)
+		{
+			if (philos->data->is_alive[0] == 1)
+				ft_print(philos, "is sleeping");
+		}
+		ft_usleep(philos->data->time_to_sleep);
+		philos->eaten++;
 		pthread_detach(*monitor);
 	}
-	philos->data->is_stuffed[philos->id] = 1;
-	return ((void *) r);
+	ft_usleep(philos->data->time_to_die - philos->data->time_to_eat - philos->data->time_to_sleep + 50);
+	return (NULL);
 }

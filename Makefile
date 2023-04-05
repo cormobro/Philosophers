@@ -1,6 +1,6 @@
 SRCS = $(addprefix Sources/, main.c error.c utils.c checker.c mutex.c threads.c utils_thread.c)
 
-NAME = philosophers
+NAME = philo
 
 INC = -I ./
 
@@ -24,4 +24,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all clean fclean re NAME
+.PHONY : all clean fclean re
