@@ -14,7 +14,7 @@ typedef struct s_philo
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
 	int				*is_alive;
-	int				*is_stuffed;
+	int				*is_ready;
 	int				philos;
 	int				servings;
 	int				stuffed;

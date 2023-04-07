@@ -61,27 +61,11 @@ int ft_init_mutex(t_philo *data)
 
 void	ft_print(t_philos *philos, char *str)
 {
-	long int	time;
-
-	time = ft_gettime();
-	if (!time)
-		return ;
-	/*pthread_mutex_lock(philos->data->death);
-	if (philos->last_dinner && time - philos->last_dinner >= philos->data->time_to_die && philos->data->is_alive[0] == 1)
-	{
-		pthread_mutex_lock(philos->data->dead);
-		philos->data->is_alive[0] = 2;
-		pthread_mutex_unlock(philos->data->dead);
-		pthread_mutex_lock(philos->data->print);
-		printf("%ld %d has died", time, philos->id);
-		pthread_mutex_unlock(philos->data->print);
-		pthread_mutex_unlock(philos->data->death);
-	}
-	pthread_mutex_unlock(philos->data->death);*/
 	if (philos->data->is_alive[0] == 1)
 	{
 		pthread_mutex_lock(philos->data->print);
-		printf("%ld %d %s\n", time - philos->data->start_time, philos->id + 1, str);
+		if (philos->data->is_alive[0] == 1)
+			printf("%ld %d %s\n", ft_gettime() - philos->data->start_time, philos->id + 1, str);
 		pthread_mutex_unlock(philos->data->print);
 	}
 }

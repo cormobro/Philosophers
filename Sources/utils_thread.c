@@ -20,7 +20,7 @@ void		ft_usleep(int time)
 	if (!currenttime)
 		return ;
 	while (ft_gettime() - currenttime < time)
-		usleep(1000);
+		usleep(10);
 }
 
 long int	ft_gettime()

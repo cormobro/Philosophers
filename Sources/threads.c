@@ -16,6 +16,7 @@ int	ft_init_threads(t_philo *data, pthread_t *threads, int err)
 		philos[i].eaten = 0;
 		philos[i].left = philos[i].id;
 		philos[i].right = (philos[i].left + 1) % philos[i].data->philos;
+		philos[i].data->is_ready[i] = 0;
 		i++;
 	}
 	philos[0].data->start_time = ft_gettime();
@@ -80,11 +81,31 @@ static void	*ft_monitor(void * datas)
 	return (0);
 }
 
+static int	ft_ready(void * datas)
+{
+	t_philos	*philos = (t_philos*) datas;
+	int		i;
+	int		res;
+
+	i = 0;
+	res = 1;
+	while (i < philos->data->philos)
+	{
+		if (philos->data->is_ready[i] == 0)
+			res = 0;
+		i++;
+	}
+	return (res);
+}
+
 void	*ft_philosopher(void * datas)
 {
 	t_philos	*philos = (t_philos*)	datas;
 	pthread_t	*monitor;
 
+	philos->data->is_ready[philos->id] = 1;
+	while (!ft_ready(philos))
+		usleep(10);
 	philos->last_dinner = ft_gettime();
 	while (philos->eaten < philos->data->servings && philos->data->is_alive[0] == 1)
 	{
