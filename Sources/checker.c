@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:19:55 by febonaer          #+#    #+#             */
-/*   Updated: 2023/04/05 13:55:39 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/04/07 15:39:03 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static int	ft_fill(int argc, char **argv, t_philo *data)
 	data->is_alive = malloc(sizeof(int));
 	if (!data->is_alive)
 		return (ft_free_fill(data, 3));
-	data->is_stuffed = malloc(sizeof(int) * data->philos);
-	if (!data->is_stuffed)
+	data->is_ready = malloc(sizeof(int) * data->philos);
+	if (!data->is_ready)
 		return (ft_free_fill(data, 4));
 	data->is_alive[0] = 1;
 	return (1);
@@ -87,12 +87,7 @@ int	ft_check_fill(int argc, char **argv, t_philo *data)
 		return (0);
 	data->death = malloc(sizeof(pthread_mutex_t));
 	if (!data->death)
-	{
-		free(data->is_stuffed);
 		return (ft_free_fill(data, 4));
-	}
 	i = -1;
-	while (++i < data->philos)
-		data->is_stuffed[i] = 0;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: febonaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 18:50:45 by febonaer          #+#    #+#             */
-/*   Updated: 2023/04/03 18:50:47 by febonaer         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:47:25 by febonaer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,4 @@ long long int	ft_atoi(const char *str)
 			return (0);
 	}
 	return (r);
-}
-
-void	ft_stuffed(t_philo *data)
-{
-	int	i;
-
-	i = 0;
-	if (data->is_stuffed[0])
-	{
-		while (data->is_stuffed[i] == data->servings)
-			i++;
-		if (i == data->philos)
-			data->stuffed = 1;
-	}
 }

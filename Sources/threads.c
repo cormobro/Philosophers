@@ -57,7 +57,7 @@ static void	*ft_monitor(void * datas)
 
 	timer = philos->data->time_to_eat + philos->data->time_to_sleep + 30;
 	if (timer < philos->data->time_to_die)
-		timer = philos->data->time_to_die;
+		timer = philos->data->time_to_die + 10;
 	i = 0;
 	while (i <= timer)
 	{
@@ -81,7 +81,7 @@ static void	*ft_monitor(void * datas)
 	return (0);
 }
 
-static int	ft_ready(void * datas)
+/*static int	ft_ready(void * datas)
 {
 	t_philos	*philos = (t_philos*) datas;
 	int		i;
@@ -96,17 +96,19 @@ static int	ft_ready(void * datas)
 		i++;
 	}
 	return (res);
-}
+}*/
 
 void	*ft_philosopher(void * datas)
 {
 	t_philos	*philos = (t_philos*)	datas;
 	pthread_t	*monitor;
 
-	philos->data->is_ready[philos->id] = 1;
+	/*philos->data->is_ready[philos->id] = 1;
 	while (!ft_ready(philos))
-		usleep(10);
+		usleep(10);*/
 	philos->last_dinner = ft_gettime();
+	if (philos->id % 2 == 1)
+		usleep(100);
 	while (philos->eaten < philos->data->servings && philos->data->is_alive[0] == 1)
 	{
 		monitor = malloc(sizeof(pthread_t));
